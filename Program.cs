@@ -3,9 +3,11 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using LiteDB;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Discord.Addons.Interactive;
 using PokeRoleBot.Services;
 
 namespace PokeRoleBot
@@ -45,6 +47,8 @@ namespace PokeRoleBot
                 .AddSingleton<LogService>()
                 // Extra
                 .AddSingleton(_config)
+                .AddSingleton(new InteractiveService(_client))
+                .AddSingleton(new LiteDatabase(@"/Data/Database.db"))
                 // Add additional services here...
                 .BuildServiceProvider();
         }

@@ -1,6 +1,6 @@
 {
   "ProjectFilePath": "c:\\Users\\Harold De La Cruz\\Documents\\Projects\\PokeRoleDex\\DiscordBot.csproj",
-  "TargetFramework": "netcoreapp1.1",
+  "TargetFramework": "netcoreapp2.0",
   "TagHelpers": [],
   "Configuration": {
     "ConfigurationName": "UnsupportedRazor",
