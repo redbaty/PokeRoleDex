@@ -15,7 +15,7 @@ namespace PokeRoleBot.Classes
         public string Description {get;set;}
         public string Height {get;set;}
         public string Weight {get;set;}
-        public List<Move> DexMoves {get;set;} = new List<Move>(); //This is the list of moves they *can* learn, not the ones they have.
+        public List<DexMoves> DexMoves {get;set;} = new List<DexMoves>(); //This is the list of moves they *can* learn, not the ones they have.
         public Score Disobedience {get;set;} = new Score();
         public Score Happyness {get;set;} = new Score(); //Only shown on team/captured pokemon
         public Score Loyalty {get;set;} = new Score(); //Only shown on team/captured pokemon

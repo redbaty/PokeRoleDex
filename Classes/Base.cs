@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Discord;
 using LiteDB;
 
 namespace PokeRoleBot.Classes
@@ -162,6 +163,27 @@ namespace PokeRoleBot.Classes
             { Type.Rock, new Type[]{}},
             { Type.Steel, new Type[]{}},
             { Type.Water, new Type[]{}}
+        };
+        static public Dictionary<Type,Color> Colors = new Dictionary<Type, Color>
+        {
+            { Type.Bug, new Color(154,205,50)},
+            { Type.Dark, new Color(210,105,30)},
+            { Type.Dragon, new Color(153,50,204)},
+            { Type.Electric, Color.Gold},
+            { Type.Fairy, new Color(255,192,203)},
+            { Type.Fighting, new Color(139,0,0)},
+            { Type.Fire, Color.Red},
+            { Type.Flying, new Color(123,104,238)},
+            { Type.Ghost, new Color(147,112,219)},
+            { Type.Grass, Color.Green},
+            { Type.Ground, new Color(240,230,140)},
+            { Type.Ice, new Color(135,206,235)},
+            { Type.Normal, Color.LightGrey},
+            { Type.Poison, new Color(75,0,130)},
+            { Type.Psychic, new Color(255,0,255)},
+            { Type.Rock, new Color(139,69,19)},
+            { Type.Steel, new Color(230,230,250)},
+            { Type.Water, new Color(30,144,255)}
         };
     }
 }

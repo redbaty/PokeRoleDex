@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.IO;
 using Microsoft.Extensions.Configuration;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Discord.Addons.Interactive;
 using LiteDB;
+using PokeRoleBot.Classes;
+using Newtonsoft.Json;
 
 namespace PokeRoleBot.Services
 {
@@ -35,6 +38,7 @@ namespace PokeRoleBot.Services
             _provider = provider;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
             // Add additional initialization code here...
+            
         }
 
         private async Task MessageReceived(SocketMessage rawMessage)
