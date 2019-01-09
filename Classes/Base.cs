@@ -42,10 +42,10 @@ namespace PokeRoleBot.Classes
         public MoveCategory MoveType {get;set;}
         public Target Target {get;set;}
         public int Power {get;set;}
-        public string DamagePool {get;set;}
+        public string Accuracy {get;set;}
+        public string[] DamagePool {get;set;} 
         public string Effects {get;set;}
         public string Description {get;set;}
-        public Dictionary<string,string> Tags {get;set;} = new Dictionary<string, string>();
     }
     public class DexMoves
     {
@@ -57,8 +57,9 @@ namespace PokeRoleBot.Classes
     {
         [BsonId]
         public int Id {get;set;}
-        public string Name {get;set;}
-        public string Description {get;set;}
+        public string name {get;set;}
+        public string description {get;set;}
+        public string effect {get;set;}
     }
     public class Score  
     //Blanket class for all Physical, mental, social scores as well as all skills and specialties. 
@@ -73,7 +74,7 @@ namespace PokeRoleBot.Classes
     //Rather than having to parse said string in the the code
     public enum PhysicalAtributes {Strength = 0, Dexterity = 1, Vitality = 2, Special = 3, Insight = 4} 
     public enum SocialAtributes {Tough = 0, Cool = 1, Beauty = 2, Cute = 3, Smart = 4, Intellgence = 4} //Smart/Intelligence returns the same int for obvious reasons
-    public enum Type {Bug, Dark, Dragon, Electric, Fairy, Fighting, Fire, Flying, Ghost, Grass, Ground, Ice, Normal, Poison, Psychic, Rock, Steel, Water, None}
+    public enum Type {Bug, Dark, Dragon, Electric, Fairy, Fight, Fire, Flying, Ghost, Grass, Ground, Ice, Normal, Poison, Psychic, Rock, Steel, Water, None}
     public enum Target {User, Ally, Allies, Foe, Random, Foes, Area, Battlefield}
     public enum MoveCategory {Physical, Special, Support}
     static public class Dictionaries{
@@ -107,29 +108,29 @@ namespace PokeRoleBot.Classes
             { Type.Dark, new Type[] {Type.Ghost, Type.Psychic}},
             { Type.Dragon, new Type[] {Type.Dragon}},
             { Type.Electric, new Type[] {Type.Flying, Type.Water}},
-            { Type.Fairy, new Type[]{Type.Dark, Type.Dragon, Type.Fighting}},
-            { Type.Fighting, new Type[]{Type.Ice, Type.Normal, Type.Rock, Type.Steel}},
+            { Type.Fairy, new Type[]{Type.Dark, Type.Dragon, Type.Fight}},
+            { Type.Fight, new Type[]{Type.Ice, Type.Normal, Type.Rock, Type.Steel}},
             { Type.Fire, new Type[]{Type.Bug, Type.Grass, Type.Ice, Type.Steel}},
-            { Type.Flying, new Type[]{Type.Bug, Type.Fighting, Type.Grass}},
+            { Type.Flying, new Type[]{Type.Bug, Type.Fight, Type.Grass}},
             { Type.Ghost, new Type[]{Type.Ghost, Type.Psychic}},
             { Type.Grass, new Type[]{Type.Ground, Type.Rock, Type.Water}},
             { Type.Ground, new Type[]{Type.Electric, Type.Fire, Type.Poison, Type.Rock, Type.Steel}},
             { Type.Ice, new Type[]{Type.Dragon, Type.Flying, Type.Grass, Type.Ground}},
             { Type.Normal, new Type[]{}},
             { Type.Poison, new Type[]{Type.Fairy, Type.Grass}},
-            { Type.Psychic, new Type[]{Type.Fighting,Type.Poison}},
+            { Type.Psychic, new Type[]{Type.Fight,Type.Poison}},
             { Type.Rock, new Type[]{Type.Bug, Type.Fire, Type.Flying, Type.Ice}},
             { Type.Steel, new Type[]{Type.Fairy, Type.Ice, Type.Rock}},
             { Type.Water, new Type[]{Type.Fire, Type.Ground, Type.Rock}}
         };
         static public Dictionary<Type,Type[]> Weakness = new Dictionary<Type, Type[]> 
         {
-            { Type.Bug, new Type[]{Type.Fairy,Type.Fighting, Type.Fire, Type.Flying, Type.Ghost, Type.Steel}},
-            { Type.Dark, new Type[] {Type.Dark, Type.Fairy, Type.Fighting}},
+            { Type.Bug, new Type[]{Type.Fairy,Type.Fight, Type.Fire, Type.Flying, Type.Ghost, Type.Steel}},
+            { Type.Dark, new Type[] {Type.Dark, Type.Fairy, Type.Fight}},
             { Type.Dragon, new Type[] {Type.Steel}},
             { Type.Electric, new Type[] {Type.Dragon, Type.Electric, Type.Grass}},
             { Type.Fairy, new Type[]{Type.Fire, Type.Poison, Type.Steel}},
-            { Type.Fighting, new Type[]{Type.Bug, Type.Fairy, Type.Flying, Type.Poison, Type.Psychic}},
+            { Type.Fight, new Type[]{Type.Bug, Type.Fairy, Type.Flying, Type.Poison, Type.Psychic}},
             { Type.Fire, new Type[]{Type.Dragon, Type.Fire, Type.Rock, Type.Water}},
             { Type.Flying, new Type[]{Type.Electric, Type.Rock, Type.Steel}},
             { Type.Ghost, new Type[]{Type.Dark}},
@@ -139,7 +140,7 @@ namespace PokeRoleBot.Classes
             { Type.Normal, new Type[]{Type.Ghost}},
             { Type.Poison, new Type[]{Type.Ghost, Type.Ground, Type.Poison, Type.Rock}},
             { Type.Psychic, new Type[]{Type.Psychic,Type.Steel}},
-            { Type.Rock, new Type[]{Type.Fighting, Type.Ground, Type.Steel}},
+            { Type.Rock, new Type[]{Type.Fight, Type.Ground, Type.Steel}},
             { Type.Steel, new Type[]{Type.Electric, Type.Fire, Type.Steel, Type.Water}},
             { Type.Water, new Type[]{Type.Dragon, Type.Grass, Type.Water}}
         };
@@ -150,7 +151,7 @@ namespace PokeRoleBot.Classes
             { Type.Dragon, new Type[] {Type.Fairy}},
             { Type.Electric, new Type[] {Type.Ground}},
             { Type.Fairy, new Type[]{}},
-            { Type.Fighting, new Type[]{Type.Ghost}},
+            { Type.Fight, new Type[]{Type.Ghost}},
             { Type.Fire, new Type[]{}},
             { Type.Flying, new Type[]{}},
             { Type.Ghost, new Type[]{Type.Normal}},
@@ -171,7 +172,7 @@ namespace PokeRoleBot.Classes
             { Type.Dragon, new Color(153,50,204)},
             { Type.Electric, Color.Gold},
             { Type.Fairy, new Color(255,192,203)},
-            { Type.Fighting, new Color(139,0,0)},
+            { Type.Fight, new Color(139,0,0)},
             { Type.Fire, Color.Red},
             { Type.Flying, new Color(123,104,238)},
             { Type.Ghost, new Color(147,112,219)},
@@ -184,6 +185,17 @@ namespace PokeRoleBot.Classes
             { Type.Rock, new Color(139,69,19)},
             { Type.Steel, new Color(230,230,250)},
             { Type.Water, new Color(30,144,255)}
+        };
+        static public Dictionary<string,Target> ParseTarget = new Dictionary<string, Target>
+        {
+            {"OneAlly", Target.Ally},
+            {"UserAndAllies", Target.Allies},
+            {"Foe", Target.Foe},
+            {"User", Target.User},
+            {"Area", Target.Area},
+            {"Battlefield", Target.Battlefield},
+            {"All Foes", Target.Foes},
+            {"Random Foe", Target.Random}
         };
     }
 }

@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
 using Discord;
 using Discord.Commands;
@@ -10,6 +11,8 @@ using Discord.Addons.Interactive;
 using LiteDB;
 using PokeRoleBot.Classes;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PokeRoleBot.Services
 {
@@ -31,6 +34,13 @@ namespace PokeRoleBot.Services
             _config = config;
 
             _discord.MessageReceived += MessageReceived;
+            _discord.Ready += OnReady;
+        }
+
+        private async Task OnReady() 
+        {
+            // await Task.Run(() => new movelist().ParseMoves(_database));
+            // await Task.Run(() => new ablitylist().ParseAblities(_database));
         }
 
         public async Task InitializeAsync(IServiceProvider provider)
@@ -38,7 +48,6 @@ namespace PokeRoleBot.Services
             _provider = provider;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
             // Add additional initialization code here...
-            
         }
 
         private async Task MessageReceived(SocketMessage rawMessage)

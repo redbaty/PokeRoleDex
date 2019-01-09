@@ -24,14 +24,14 @@ namespace PokeRoleBot
         {
             _client = new DiscordSocketClient();
             _config = BuildConfig();
-
+            
             var services = ConfigureServices();
             services.GetRequiredService<LogService>();
             await services.GetRequiredService<CommandHandlingService>().InitializeAsync(services);
-
+            
             await _client.LoginAsync(TokenType.Bot, _config["token"]);
             await _client.StartAsync();
-
+            
             await Task.Delay(-1);
         }
 
@@ -48,7 +48,7 @@ namespace PokeRoleBot
                 // Extra
                 .AddSingleton(_config)
                 .AddSingleton(new InteractiveService(_client))
-                .AddSingleton(new LiteDatabase(@"/Data/Database.db"))
+                .AddSingleton(new LiteDatabase(Directory.GetCurrentDirectory()+@"/Data/Database.db"))
                 // Add additional services here...
                 .BuildServiceProvider();
         }
